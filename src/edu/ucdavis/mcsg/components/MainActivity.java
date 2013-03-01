@@ -67,6 +67,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		case R.id.gpsButton:
 			testName = "GPS Test";
 			Log.d(TAG, "Running "+testName+"...");
+			t = new Thread(new GPSTest(this));
+			t.start();
 			break;
 		default:
 			Log.d(TAG, "Unknown button pressed.");
