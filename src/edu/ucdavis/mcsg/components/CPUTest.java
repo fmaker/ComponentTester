@@ -22,7 +22,6 @@ public class CPUTest extends Test{
 	static final String CAT = "/system/bin/cat";	
 
 	static final int FREQ_SETTLE = Constants.RATE_MS; // 250 ms
-	static final int TEST_TIME = Constants.RATE_MS * 5;
 	
 	boolean debug = true;
 	boolean running = false;
@@ -45,7 +44,7 @@ public class CPUTest extends Test{
 				runRootCommand("echo "+freq+" > "+WRITE_FREQ);
 				printSettings();
 				Thread.sleep(FREQ_SETTLE);
-				busyWait(TEST_TIME);
+				busyWait(Constants.TEST_TIME);
 			}
 			
 			updateText("DONE!");
@@ -83,7 +82,7 @@ public class CPUTest extends Test{
 
 		// Schedule task to end test and run dummy operation
 		running = true;
-		t.schedule(task, duration); 
+		t.schedule(task, duration);
 		while(running){
 			i++;
 		}

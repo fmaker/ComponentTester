@@ -6,10 +6,9 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 public class DisplayTest extends Test{
-	final String BRIGHTNESS = "/sys/class/leds/lcd-backlight/brightness";
+	final static String BRIGHTNESS = "/sys/class/leds/lcd-backlight/brightness";
 	final int[] values = {5, 30, 55, 80, 105, 130, 155, 180, 205, 230, 255};
 	
-	final int TEST_TIME = 3520*5; // ms
 	View whiteView;
 	
 	public DisplayTest(MainActivity activity) {
@@ -39,8 +38,8 @@ public class DisplayTest extends Test{
 		for(final int b : values){
 			try {
 				Log.d(MainActivity.TAG, "Setting brightness to: "+b);
-				runRootCommand("echo "+b+" > "+BRIGHTNESS);
-				Thread.sleep(TEST_TIME);
+				setBrightness(b);
+				Thread.sleep(Constants.TEST_TIME);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -61,5 +60,9 @@ public class DisplayTest extends Test{
 			}
 		});
 		
+	}
+	
+	public static void setBrightness(int b){
+		runRootCommand("echo "+b+" > "+BRIGHTNESS);
 	}
 }

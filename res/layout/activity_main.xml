@@ -25,11 +25,34 @@
         android:layout_below="@id/cpuButton"
         android:text="Display Test" />
 
+    <Button
+        android:id="@+id/cellButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/displayButton"
+        android:text="Cellular Test" 
+        android:enabled="false"/>
+
+    <Button
+        android:id="@+id/wifiButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cellButton"
+        android:text="Wifi Test"/>
+
+    <Button
+        android:id="@+id/gpsButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wifiButton"
+        android:text="GPS Test" 
+        android:enabled="false"/>
+
     <TextView
         android:id="@+id/details"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/displayButton"
+        android:layout_below="@id/gpsButton"
         android:paddingTop="20dp"
         android:text="Test Details..." />
 
