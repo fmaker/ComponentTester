@@ -19,14 +19,16 @@ import android.widget.Toast;
 public class WifiTest extends Test implements Runnable {
 	final int[] packetRates = 
 		{8,10,12,14,18,20,25,30,35,40,45,50,100,125,200,250,500};
+		//{1,25,1000};
 	final int MS_PER_SECOND = 1000;
-	final String HOST = "192.168.1.8"; // faraday eth0
-	final String MSG = "Hello World!";
+	final String HOST = "192.168.1.8";
+	final String MSG = "WifiTest";
 	final int PORT = 16000;
 	
 	DatagramSocket mSock;
 	DatagramPacket mPacket;
 	boolean debug = true;
+	int packetsSent = 0;
 
 	public WifiTest(MainActivity activity) {
 		super(activity);
@@ -65,14 +67,21 @@ public class WifiTest extends Test implements Runnable {
 	private void packetRateTest(){
 		long start;
 
-		for(int rate : packetRates){
+		for(final int rate : packetRates){
 			final Timer t = new Timer();
 			final SendPacket sp = new SendPacket();
 		//int rate = packetRates[0];
+			mainActivity.runOnUiThread(new Runnable(){
+				@Override
+				public void run() {
+					mainActivity.setText(String.valueOf(rate));
+				}
+			});
 			if(debug)
 				Log.d(MainActivity.TAG, "Packet rate: "+rate);
 			
 			// Start sending packets at rate/sec
+			packetsSent = 0;
 			testRunning = true;
 			start = System.currentTimeMillis();
 			int period = MS_PER_SECOND/rate;
@@ -84,10 +93,19 @@ public class WifiTest extends Test implements Runnable {
 				public void run() {
 					sp.cancel();
 					testRunning = false;
+					if(debug)
+						Log.d(MainActivity.TAG, 
+								"Packets sent: "+packetsSent+" ("+(packetsSent*1000)/Constants.TEST_TIME+"/s)");
 				}
 			}, new Date(start+Constants.TEST_TIME));
 			while(testRunning);  // Block until test finished
 			t.cancel();
+			try {
+				Thread.sleep(Constants.RATE_MS);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			if(debug)
 				Log.d(MainActivity.TAG, "Test done!");
 			
@@ -99,8 +117,9 @@ public class WifiTest extends Test implements Runnable {
 		public void run() {
 			try {
 				mSock.send(mPacket);
-				if(debug)
-					Log.d(MainActivity.TAG, "Sent packet");
+				if(debug){
+					packetsSent++;
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

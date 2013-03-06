@@ -1,7 +1,6 @@
 package edu.ucdavis.mcsg.components;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -23,7 +22,7 @@ public class CPUTest extends Test{
 
 	static final int FREQ_SETTLE = Constants.RATE_MS; // 250 ms
 	
-	boolean debug = true;
+	static boolean debug = true;
 	boolean running = false;
 	
 	MainActivity mainActivity;
@@ -42,8 +41,8 @@ public class CPUTest extends Test{
 			for(final String freq : freqs){
 				updateText(freq);
 				runRootCommand("echo "+freq+" > "+WRITE_FREQ);
-				printSettings();
-				Thread.sleep(FREQ_SETTLE);
+				//printSettings();
+				//Thread.sleep(FREQ_SETTLE);
 				busyWait(Constants.TEST_TIME);
 			}
 			
@@ -86,6 +85,12 @@ public class CPUTest extends Test{
 		while(running){
 			i++;
 		}
+		try {
+			Thread.sleep(Constants.RATE_MS);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if(debug)
 			Log.d(MainActivity.TAG, "Test: "+i);
 	}
@@ -110,7 +115,15 @@ public class CPUTest extends Test{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return allFreqs != null ? allFreqs.split(" ") : null;
+		String[] freqs = allFreqs.trim().split(" ");
+		
+		if(debug){
+			for(String f : freqs){
+				Log.d(MainActivity.TAG, f);
+			}
+		}
+		
+		return allFreqs != null ? freqs : null;
 		
 	}
 	

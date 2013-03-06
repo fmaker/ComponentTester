@@ -38,6 +38,11 @@ public class GPSTest extends Test implements Runnable {
 			t.schedule(new GpsOff(), new Date(start+Constants.TEST_TIME));
 			//Log.d(MainActivity.TAG, "Sceduled GPS off for: "+(start+Constants.TEST_TIME));
 			while(!finished);
+			try {
+				Thread.sleep(Constants.RATE_MS);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

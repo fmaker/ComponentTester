@@ -1,13 +1,13 @@
 package edu.ucdavis.mcsg.components;
 
+import java.io.FileNotFoundException;
+
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnClickListener {
@@ -38,7 +38,12 @@ public class MainActivity extends Activity implements OnClickListener {
 		Thread t;
 		String testName = "";
 		
-		prepareForTest();
+		try{
+			prepareForTest();
+		}
+		catch(Exception e){
+			Log.d(TAG, "Unable to prefare for test.");
+		}
 
 		switch(id){
 		
@@ -57,6 +62,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		case R.id.cellButton:
 			testName = "Cell Test";
 			Log.d(TAG, "Running "+testName+"...");
+			t = new Thread(new CellTest(this));
+			t.start();
 			break;
 		case R.id.wifiButton:
 			testName = "Wifi Test";

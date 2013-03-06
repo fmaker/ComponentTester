@@ -3,6 +3,8 @@ package edu.ucdavis.mcsg.components;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 public class DisplayTest extends Test{
@@ -13,6 +15,7 @@ public class DisplayTest extends Test{
 	
 	public DisplayTest(MainActivity activity) {
 		super(activity);
+
 	}
 	
 	public void run(){
@@ -40,6 +43,8 @@ public class DisplayTest extends Test{
 				Log.d(MainActivity.TAG, "Setting brightness to: "+b);
 				setBrightness(b);
 				Thread.sleep(Constants.TEST_TIME);
+				setBrightness(0);
+				Thread.sleep(Constants.RATE_MS);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
